@@ -1,1 +1,32 @@
-<p>landing-page works!</p>
+<div class="container-fluid">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <span>RSO-1920</span>
+            <span class="spacer"></span>
+            <span style="margin-right: 1em"><small>{{ String() }}</small></span>
+            <button mat-raised-button color="warn" (click)="logOut()">Logout</button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container class="sidebar-container">
+        <mat-sidenav  mode="side" opened class="sidebar-container-side">
+            <div style="margin: 0.5em">
+                Sidenav content
+            </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div style="margin: 0.5em">
+                <div class="row">
+                    <div class="col-9">
+                        col-9 - main
+                    </div>
+                    <div class="col-3">
+                        col-3 chat
+                    </div>
+                </div>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+
+

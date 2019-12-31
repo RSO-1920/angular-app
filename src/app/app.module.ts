@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 /** Modules * */
 import {MaterialModule} from './material/material.module';
@@ -13,6 +14,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { Page404Component } from './components/page404/page404.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,12 +22,13 @@ import { Page404Component } from './components/page404/page404.component';
     LandingPageComponent,
     Page404Component
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

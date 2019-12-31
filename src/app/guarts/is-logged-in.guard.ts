@@ -4,20 +4,21 @@ import { Observable } from 'rxjs';
 import {OathService} from '../services/oath.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class LoginActivateGuard implements CanActivate {
+export class IsLoggedInGuard implements CanActivate {
     constructor(
         private oathService: OathService,
         private router: Router
     ) {}
     canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // TODO get real access token and so on
-        if (!this.oathService.getUserAccessToken()) {
-            return this.router.navigate(['']);
+        console.log('TOKEN: ', this.oathService.getUserAccessToken());
+        if (this.oathService.getUserAccessToken()) {
+            return this.router.navigate(['main']);
         }
         return true;
-    }
+  }
 }

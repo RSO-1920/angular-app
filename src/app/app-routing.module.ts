@@ -4,10 +4,11 @@ import { UserCredentialsComponent } from './components/user-credentials/user-cre
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import {LoginActivateGuard} from './guarts/login-activate.guard';
 import {Page404Component} from './components/page404/page404.component';
+import {IsLoggedInGuard} from './guarts/is-logged-in.guard';
 
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', component: UserCredentialsComponent},
+  {path: '', pathMatch: 'full', component: UserCredentialsComponent, canActivate: [IsLoggedInGuard]},
   {path: 'main', component: LandingPageComponent, canActivate: [LoginActivateGuard]},
   {path: '**', component: Page404Component}
 ];
