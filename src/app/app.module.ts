@@ -14,7 +14,8 @@ import { UserCredentialsComponent } from './components/user-credentials/user-cre
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { Page404Component } from './components/page404/page404.component';
 import { FileCardComponent } from './components/utils/file-card/file-card.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import {ChannelService} from "./services/channel.service";
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { FileCardComponent } from './components/utils/file-card/file-card.compon
     UserCredentialsComponent,
     LandingPageComponent,
     Page404Component,
-    FileCardComponent
+    FileCardComponent,
   ],
     imports: [
         BrowserModule,
@@ -31,9 +32,11 @@ import { FileCardComponent } from './components/utils/file-card/file-card.compon
         BrowserAnimationsModule,
         MaterialModule,
         FormsModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        HttpClientModule,
+
     ],
-  providers: [],
+  providers: [ChannelService],
   bootstrap: [AppComponent]
 })
 

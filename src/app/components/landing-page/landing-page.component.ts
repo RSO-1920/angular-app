@@ -1,6 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {OathService} from '../../services/oath.service';
 import {Router} from '@angular/router';
+import {Channel} from '../../models/channel';
+import {ChannelService} from '../../services/channel.service';
 
 @Component({
     selector: 'app-landing-page',
@@ -15,7 +17,8 @@ export class LandingPageComponent implements OnInit {
     constructor(
       private oathService: OathService,
       private changeDetector: ChangeDetectorRef,
-      private  router: Router
+      private  router: Router,
+      private channelService: ChannelService
     ) {
     }
 
@@ -27,6 +30,7 @@ export class LandingPageComponent implements OnInit {
                 this.changeDetector.markForCheck();
             }
         );
+        this.getChannelsOfUser();
     }
 
     logOut() {
@@ -39,5 +43,16 @@ export class LandingPageComponent implements OnInit {
             return 'NO USER';
         }
         return this.userDataLanding.toString();
+    }
+
+    private getChannelsOfUser() {
+        return this.channelService.getChannels(2).subscribe(
+            (success) => {
+                console.log(success);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 }
