@@ -3,7 +3,6 @@ export class File {
     fileName: string;
     fileType: string;
     userId: number;
-    channelId: number;
-    fileLabels: Array<string>;
-
+    fileId: number;
+    keywords: Array<string>;
 }

@@ -1,17 +1,18 @@
+
 <mat-card class="example-card">
     <mat-card-header>
-        <mat-card-title>FILE NAME</mat-card-title>
-        <mat-card-subtitle>file type</mat-card-subtitle>
+        <mat-card-title>{{this.file.fileName}}</mat-card-title>
+        <mat-card-subtitle>{{this.file.fileType}} | file id: {{this.file.fileId}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <p>
-            keyword1, keyword 2, keyword 3
-        </p>
+        <span *ngFor="let word of this.file.keywords">
+            {{word}}
+        </span>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-button>OPEN</button>
-        <button mat-button>DOWNLOAD</button>
-        <!--<button mat-button>DELETE</button>-->
+        <button mat-button (click)="openFile()">OPEN</button>
+        <button mat-button (click)="downloadFile()">DOWNLOAD</button>
+        <button mat-button *ngIf="file.fileType === 'mp4'" (click)="stream()">STREAM VIDEO</button>
     </mat-card-actions>
 
     <button class="block2" mat-button matSuffix mat-icon-button aria-label="Clear" color="warn">
