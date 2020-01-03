@@ -12,7 +12,7 @@ export class FileCardComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        console.log(this.file);
+        // console.log(this.file);
     }
 
     openFile() {

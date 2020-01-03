@@ -18,6 +18,7 @@ export class LandingPageComponent implements OnInit {
     channels: Array<Channel>;
     channelFiles: Array<File>;
     channelMessages: Array<Message>;
+    searchString = '';
 
     constructor(
       private oathService: OathService,
@@ -138,7 +139,7 @@ export class LandingPageComponent implements OnInit {
                 );
             },
             error => console.log(error)
-        )
+        );
     }
 
     postMessage(value: string) {
@@ -155,5 +156,19 @@ export class LandingPageComponent implements OnInit {
                 }
             );
         }
+    }
+
+    searchFiles() {
+        console.log('SEARCH: ', this.searchString);
+        this.channelService.searchFilesOfChannel(this.searchString).subscribe(
+            // tslint:disable-next-line:no-shadowed-variable
+            (success1) => {
+                this.channelFiles = success1.data;
+                this.changeDetector.markForCheck();
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 }

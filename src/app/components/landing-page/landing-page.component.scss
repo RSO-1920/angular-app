@@ -14,3 +14,17 @@
     background: ghostwhite;
     width: 10%;
 }
+
+.channelList {
+    overflow-wrap: break-word;
+    cursor: pointer;
+}
+
+.channelList:hover {
+    background: lightblue;
+}
+
+::ng-deep .mat-line{
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+}

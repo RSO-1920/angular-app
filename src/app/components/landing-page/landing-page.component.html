@@ -13,7 +13,7 @@
                 <mat-list>
                     <h3 mat-subheader>Channels</h3>
                     <div *ngFor="let channel of this.channels " (click)="changeChannel(channel.channelId)">
-                        <mat-list-item >
+                        <mat-list-item class="channelList">
                             <!--<mat-icon mat-list-icon>folder</mat-icon>-->
                             <h4 mat-line>{{channel.channelName}}</h4>
                             <p mat-line> {{channel.channelId}} </p>
@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <input type="file"
                                        id="file"
-                                       (change)="uploadFile($event.target.files)">
+                                       (change)="uploadFile($event.target.files)"> <!--Leave alone it works-->
                             </div>
 
                         </div>
@@ -44,10 +44,16 @@
                         <div class="col-9"
                              fxLayout="row wrap"
                              fxLayout.xs="column"
-                             fxLayoutAlign="space-evenly center"
+                             fxLayoutAlign="space-evenly"
                              fxLayoutGap="10px grid"
                              fxLayoutGap.xs="0"
                         >
+                            <mat-form-field class="fullwidth">
+                                <input matInput type="text" placeholder="Search: seperate multiple words with comma: etc. Car, Building" [(ngModel)]="searchString" (keyup.enter)="searchFiles()">
+                                <button mat-button *ngIf="searchString" matSuffix mat-icon-button aria-label="Clear" (click)="searchString=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
 
                             <div *ngIf="this.channelFiles">
                                 <div *ngFor="let file of this.channelFiles" style="display: inline-block; width: 50%; max-width: 50%; margin-top: 3%">

@@ -23,6 +23,9 @@ export class ChannelService {
     getFilesOfChannel(id: number): Observable<any> {
         return this.http.get(environment.url + 'catalog/v1/catalog/channel/' + id);
     }
+    searchFilesOfChannel(searchString: string): Observable<any> {
+        return this.http.get(environment.url + 'catalog/v1/catalog/keywords?key=' + searchString);
+    }
     getMessagesOfChannel(id: number): Observable<any> {
         // TODO: This
         return this.http.get(environment.url + 'incomingmsg/v1/msg/' + id);
