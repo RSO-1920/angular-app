@@ -1,12 +1,13 @@
+
 <mat-card class="example-card">
     <mat-card-header>
-        <mat-card-title>FILE NAME</mat-card-title>
-        <mat-card-subtitle>file type</mat-card-subtitle>
+        <mat-card-title>{{this.file.fileName}}</mat-card-title>
+        <mat-card-subtitle>{{this.file.fileType}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <p>
-            keyword1, keyword 2, keyword 3
-        </p>
+        <span *ngFor="let word of this.file.keywords">
+            {{word}}
+        </span>
     </mat-card-content>
     <mat-card-actions>
         <button mat-button>OPEN</button>

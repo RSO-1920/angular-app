@@ -4,6 +4,5 @@ export class File {
     fileType: string;
     userId: number;
     channelId: number;
-    fileLabels: Array<string>;
-
+    keywords: Array<string>;
 }

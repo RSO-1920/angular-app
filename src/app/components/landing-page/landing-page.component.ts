@@ -3,6 +3,7 @@ import {OathService} from '../../services/oath.service';
 import {Router} from '@angular/router';
 import {Channel} from '../../models/channel';
 import {ChannelService} from '../../services/channel.service';
+import {Message} from '../../models/message';
 
 @Component({
     selector: 'app-landing-page',
@@ -13,6 +14,10 @@ import {ChannelService} from '../../services/channel.service';
 export class LandingPageComponent implements OnInit {
 
     userDataLanding: any;
+    currentChannel: Channel;
+    channels: Array<Channel>;
+    channelFiles: Array<File>;
+    channelMessages: Array<Message>;
 
     constructor(
       private oathService: OathService,
@@ -46,13 +51,84 @@ export class LandingPageComponent implements OnInit {
     }
 
     private getChannelsOfUser() {
-        return this.channelService.getChannels(2).subscribe(
+        return this.channelService.getChannels(1).subscribe(
             (success) => {
-                console.log(success);
+                this.channels = success.data;
+                this.currentChannel = this.channels[0];
+                // tslint:disable-next-line:prefer-for-of
+                for (let i = 0; i < this.channels.length; i++) {
+                    if (this.channels[i].channelType.typeId === 1) {
+                        this.currentChannel = this.channels[i];
+                        break;
+                    }
+                }
+                this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
+                    // tslint:disable-next-line:no-shadowed-variable
+                    (success1) => {
+                        this.channelFiles = success1.data;
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+                this.changeDetector.markForCheck();
             },
             (error) => {
                 console.log(error);
             }
         );
+    }
+
+    changeChannel(channelId: any) {
+        this.channelService.getFilesOfChannel(channelId).subscribe(
+            (success) => {
+                this.channelFiles = success.data;
+                console.log('SUCCESS');
+                this.channelService.getMessagesOfChannel(channelId).subscribe(
+                    (success1) => {
+                        this.channelMessages =  success1.data;
+                        console.log('SUCCESS2');
+                        // tslint:disable-next-line:prefer-for-of
+                        for (let i = 0; i < this.channels.length; i++) {
+                            if (this.channels[i].channelId === channelId) {
+                                this.currentChannel = this.channels[i];
+                                break;
+                            }
+                        }
+                        this.changeDetector.markForCheck();
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            },
+                (error) => {
+                    console.log(error);
+                }
+        );
+    }
+
+    // MANAGE FILES:
+    downloadFile(fileName: string, channelName: string) {
+        this.channelService.downloadFile(fileName, channelName);
+    }
+
+    openFile(fileName: string, channelName: string) {
+        this.channelService.openFile(fileName, channelName);
+    }
+    deleteFile(fileId: number, channelId: number) {
+        this.channelService.deleteFile(fileId, channelId);
+    }
+    uploadFile(file) {
+        // TODO: kaj se pošlje?
+        this.channelService.uploadFile(6, 2, 2);
+    }
+
+    postMessage(value: string) {
+        console.log('SENDING MESSAGE' + value);
+        // TODO: NASTAVI USERJA
+        if (value !== '') {
+            this.channelService.postMessage(value, 'uros', this.currentChannel.channelId);
+        }
     }
 }

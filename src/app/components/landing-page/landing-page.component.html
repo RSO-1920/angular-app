@@ -10,66 +10,53 @@
     <mat-sidenav-container class="sidebar-container">
         <mat-sidenav  mode="side" opened class="sidebar-container-side">
             <div style="margin: 0.5em">
+
                 <mat-list>
                     <h3 mat-subheader>Channels</h3>
-                    <mat-list-item>
-                        <mat-icon mat-list-icon>folder</mat-icon>
-                        <h4 mat-line>channels 1</h4>
-                        <p mat-line> details </p>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <mat-icon mat-list-icon>folder</mat-icon>
-                        <h4 mat-line>channels 2</h4>
-                        <p mat-line> details 2</p>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <mat-icon mat-list-icon>folder</mat-icon>
-                        <h4 mat-line>channels 2</h4>
-                        <p mat-line> details 2</p>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
+                    <div *ngFor="let channel of this.channels " (click)="changeChannel(channel.channelId)">
+                        <mat-list-item >
+                            <mat-icon mat-list-icon>folder</mat-icon>
+                            <h4 mat-line>{{channel.channelName}}</h4>
+                            <p mat-line> {{channel.channelId}} </p>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                    </div>
                 </mat-list>
             </div>
         </mat-sidenav>
         <mat-sidenav-content>
-            <div style="margin: 0.5em">
-                <div class="row">
-                    <div class="col-11">
-                        <h3>Channel 1 <small>channel id</small></h3>
-                        <p><small>bucket_name/channel_type</small></p>
+            <div *ngIf="currentChannel">
+                <div style="margin: 0.5em">
+                    <div class="row">
+                        <div class="col-11">
+                            <h3>{{this.currentChannel.bucketName}} <small>[{{this.currentChannel.channelId}}]</small></h3>
+                            <p><small>{{this.currentChannel.bucketName}} / {{this.currentChannel.channelType.typeName}}</small></p>
+                        </div>
+                        <div class="col-1">
+                            <button style="margin: 1em" mat-raised-button color="primary">UPLOAD</button>
+                        </div>
                     </div>
-                    <div class="col-1">
-                        <button style="margin: 1em" mat-raised-button color="primary">UPLOAD</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-9"
-                         fxLayout="row wrap"
-                         fxLayout.xs="column"
-                         fxLayoutAlign="space-evenly center"
-                         fxLayoutGap="10px grid"
-                         fxLayoutGap.xs="0"
-                    >
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                        <app-file-card fxFlex="33%"></app-file-card>
-                    </div>
-                    <div class="col-3">
-                        col-3 chat
+                    <div class="row">
+                        <div class="col-9"
+                             fxLayout="row wrap"
+                             fxLayout.xs="column"
+                             fxLayoutAlign="space-evenly center"
+                             fxLayoutGap="10px grid"
+                             fxLayoutGap.xs="0"
+                        >
+
+                            <div *ngIf="this.channelFiles">
+                                <app-file-card *ngFor="let file of this.channelFiles" [file]="file" fxFlex="33%"></app-file-card>
+                            </div>
+
+                        </div>
+                        <div class="col-3">
+                            <p *ngFor="let message of this.channelMessages">
+                                {{message.userName}}: {{message.message}}
+                            </p>
+                            <input (keyup.enter)="postMessage($event.target.value)" id="post" type="text" style="width:400px; "/>
+
+                        </div>
                     </div>
                 </div>
             </div>
