@@ -114,20 +114,31 @@ export class LandingPageComponent implements OnInit {
         );
     }
 
-    // MANAGE FILES:
-    downloadFile(fileName: string, channelName: string) {
-        this.channelService.downloadFile(fileName, channelName);
-    }
 
-    openFile(fileName: string, channelName: string) {
-        this.channelService.openFile(fileName, channelName);
-    }
     deleteFile(fileId: number, channelId: number) {
         this.channelService.deleteFile(fileId, channelId);
     }
-    uploadFile(file) {
+    uploadFile(files: FileList) {
         // TODO: kaj se pošlje?
-        this.channelService.uploadFile(6, 2, 2);
+        let fileToUpload: File = null;
+        fileToUpload = files.item(0);
+        console.log(fileToUpload);
+        this.channelService.uploadFile(fileToUpload, 1, this.currentChannel.channelId).subscribe(
+            (rsp: any) => {
+                console.log('FILE UPLOAD: ', rsp);
+                this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
+                    // tslint:disable-next-line:no-shadowed-variable
+                    (success1) => {
+                        this.channelFiles = success1.data;
+                        this.changeDetector.markForCheck();
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            },
+            error => console.log(error)
+        )
     }
 
     postMessage(value: string) {

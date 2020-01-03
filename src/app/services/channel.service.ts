@@ -45,9 +45,13 @@ export class ChannelService {
             'file-manager/v1/file/delete/?fileId=' + fileId +
             '&channelId=' + channelId);
     }
-    uploadFile(fileId: number, userId: number, channelId: number) {
-        // TODO: kaj gre vse v body?
-        return this.http.post(environment.url + 'file-manager/v1/file/upload', '???');
+    uploadFile(fileToUpload: File, userId: number, channelId: number) {
+        const formData: FormData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+        formData.append('integerUser', userId.toString());
+        formData.append('integerChannel', channelId.toString());
+        return this.http
+            .post(environment.url + 'file-manager/v1/file/upload', formData);
     }
 
     postMessage(msg: string, uName: string, chId: number): Observable<any> {

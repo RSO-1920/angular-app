@@ -26,7 +26,11 @@ export class FileCardComponent implements OnInit {
         console.log('downloading file');
         const filePath: Array<string> = this.file.filePath.split('/');
         if (filePath.length === 2) {
-            window.open(environment.url + 'filedownloader/v1/file/download/' + filePath[0] + '/' + filePath[1], );
+            window.open(environment.url + 'filedownloader/v1/file/download/' + filePath[0] + '/' + filePath[1] );
         }
+    }
+
+    stream() {
+        window.open(environment.url + 'streamer/v1/stream/' + this.file.fileId, '_blank' );
     }
 }

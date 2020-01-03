@@ -32,7 +32,12 @@
                             <p><small>{{this.currentChannel.bucketName}} / {{this.currentChannel.channelType.typeName}}</small></p>
                         </div>
                         <div class="col-1">
-                            <button style="margin: 1em" mat-raised-button color="primary">UPLOAD</button>
+                            <div class="form-group">
+                                <input type="file"
+                                       id="file"
+                                       (change)="uploadFile($event.target.files)">
+                            </div>
+
                         </div>
                     </div>
                     <div class="row">
