@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {File} from '../../../models/file';
+import {environment} from '../../../../environments/environment';
 @Component({
     selector: 'app-file-card',
     templateUrl: './file-card.component.html',
@@ -14,4 +15,18 @@ export class FileCardComponent implements OnInit {
         console.log(this.file);
     }
 
+    openFile() {
+        const filePath: Array<string> = this.file.filePath.split('/');
+        if (filePath.length === 2) {
+            window.open(environment.url + 'filedownloader/v1/file/showInBrowser/' + filePath[0] + '/' + filePath[1], '_blank');
+        }
+    }
+
+    downloadFile() {
+        console.log('downloading file');
+        const filePath: Array<string> = this.file.filePath.split('/');
+        if (filePath.length === 2) {
+            window.open(environment.url + 'filedownloader/v1/file/download/' + filePath[0] + '/' + filePath[1], );
+        }
+    }
 }

@@ -10,12 +10,11 @@
     <mat-sidenav-container class="sidebar-container">
         <mat-sidenav  mode="side" opened class="sidebar-container-side">
             <div style="margin: 0.5em">
-
                 <mat-list>
                     <h3 mat-subheader>Channels</h3>
                     <div *ngFor="let channel of this.channels " (click)="changeChannel(channel.channelId)">
                         <mat-list-item >
-                            <mat-icon mat-list-icon>folder</mat-icon>
+                            <!--<mat-icon mat-list-icon>folder</mat-icon>-->
                             <h4 mat-line>{{channel.channelName}}</h4>
                             <p mat-line> {{channel.channelId}} </p>
                         </mat-list-item>

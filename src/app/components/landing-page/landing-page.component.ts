@@ -66,12 +66,20 @@ export class LandingPageComponent implements OnInit {
                     // tslint:disable-next-line:no-shadowed-variable
                     (success1) => {
                         this.channelFiles = success1.data;
+                        this.channelService.getMessagesOfChannel(this.currentChannel.channelId).subscribe(
+                            (messagesRsp: any) => {
+                                this.channelMessages =  messagesRsp.data;
+                                this.changeDetector.markForCheck();
+                            },
+                            error => {
+                                console.log('error: ', error);
+                            }
+                        );
                     },
                     (error) => {
                         console.log(error);
                     }
                 );
-                this.changeDetector.markForCheck();
             },
             (error) => {
                 console.log(error);
@@ -83,11 +91,9 @@ export class LandingPageComponent implements OnInit {
         this.channelService.getFilesOfChannel(channelId).subscribe(
             (success) => {
                 this.channelFiles = success.data;
-                console.log('SUCCESS');
                 this.channelService.getMessagesOfChannel(channelId).subscribe(
                     (success1) => {
                         this.channelMessages =  success1.data;
-                        console.log('SUCCESS2');
                         // tslint:disable-next-line:prefer-for-of
                         for (let i = 0; i < this.channels.length; i++) {
                             if (this.channels[i].channelId === channelId) {
@@ -125,10 +131,18 @@ export class LandingPageComponent implements OnInit {
     }
 
     postMessage(value: string) {
-        console.log('SENDING MESSAGE' + value);
+        console.log('SENDING MESSAGE ' + value);
+        console.log('channel: ' + this.currentChannel.channelId);
         // TODO: NASTAVI USERJA
         if (value !== '') {
-            this.channelService.postMessage(value, 'uros', this.currentChannel.channelId);
+            this.channelService.postMessage(value, 'uros', this.currentChannel.channelId).subscribe(
+                (rsp: any) => {
+                    console.log('RSP: ', rsp);
+                },
+                error => {
+                    console.log(error);
+                }
+            );
         }
     }
 }

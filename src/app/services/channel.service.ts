@@ -13,10 +13,6 @@ export class ChannelService {
     constructor(private http: HttpClient)  {
 
     }
-    private handleError(error: any): Promise<any> {
-        console.error('Prišlo je do napake', error);
-        return Promise.reject(error.message || error);
-    }
 
     // MANAGE CHANNELS
     getChannels(id: number): Observable<any> {
@@ -33,16 +29,16 @@ export class ChannelService {
     }
     // MANAGE FILES
 
+    /*  HANDLED IN PRIMITIWE WAY WITH WINDOWS REDIRECTS
     downloadFile(fileName: string, channelName: string) {
-        // TODO: kaže na pencatov service!
+        //
         return this.http.get(environment.url + 'v1/fileTransfer/' +
             channelName + '/' + fileName);
     }
 
     openFile(fileName: string, channelName: string) {
-        return this.http.get(environment.url + 'filedownloader/v1/file/showInBrowser/' +
-            channelName + '/' + fileName );
-    }
+        return this.http.get(environment.url + 'filedownloader/v1/file/showInBrowser/' + channelName + '/' + fileName );
+    }*/
 
     deleteFile(fileId: number, channelId: number) {
         return this.http.delete(environment.url +
@@ -54,7 +50,7 @@ export class ChannelService {
         return this.http.post(environment.url + 'file-manager/v1/file/upload', '???');
     }
 
-    postMessage(msg: string, uName: string, chId: number) {
+    postMessage(msg: string, uName: string, chId: number): Observable<any> {
         return this.http.post(environment.url + 'incomingmsg/v1/msg/' + chId, {message: msg, userName: uName, channelId: chId});
     }
 }
