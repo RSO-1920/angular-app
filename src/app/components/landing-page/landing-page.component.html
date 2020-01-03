@@ -50,7 +50,9 @@
                         >
 
                             <div *ngIf="this.channelFiles">
-                                <app-file-card *ngFor="let file of this.channelFiles" [file]="file" fxFlex="33%"></app-file-card>
+                                <div *ngFor="let file of this.channelFiles" style="display: inline-block; width: 50%; max-width: 50%; margin-top: 3%">
+                                    <app-file-card [file]="file"  ></app-file-card>
+                                </div>
                             </div>
 
                         </div>
