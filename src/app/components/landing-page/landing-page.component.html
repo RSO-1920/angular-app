@@ -63,7 +63,7 @@
 
                             <div *ngIf="this.channelFiles">
                                 <div *ngFor="let file of this.channelFiles" style="display: inline-block; width: 50%; max-width: 50%; margin-top: 3%">
-                                    <app-file-card [file]="file" ></app-file-card>
+                                    <app-file-card [file]="file" [channelId]="currentChannel.channelId" (fileDeletionSuccess)="fileDeletionSuccess($event)"></app-file-card>
                                 </div>
                             </div>
 

@@ -192,7 +192,7 @@ export class LandingPageComponent implements OnInit {
                 this.getChannelsOfUser();
             },
             error => console.log(error)
-        )
+        );
         console.log('unsubscibe');
     }
 
@@ -205,5 +205,21 @@ export class LandingPageComponent implements OnInit {
                 },
                 error => console.log(error)
             );
+    }
+
+    fileDeletionSuccess(isDeleted: boolean) {
+        console.log('IS DELETED: ', isDeleted);
+        if (isDeleted) {
+            this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
+                // tslint:disable-next-line:no-shadowed-variable
+                (success1) => {
+                    this.channelFiles = success1.data;
+                    this.changeDetector.markForCheck();
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        }
     }
 }

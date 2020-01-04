@@ -15,7 +15,7 @@
         <button mat-button *ngIf="file.fileType === 'mp4'" (click)="stream()">STREAM VIDEO</button>
     </mat-card-actions>
 
-    <button class="block2" mat-button matSuffix mat-icon-button aria-label="Clear" color="warn">
+    <button class="block2" mat-button matSuffix mat-icon-button aria-label="Clear" color="warn" (click)="deleteFile()">
         <mat-icon>close</mat-icon>
     </button>
 </mat-card>

@@ -72,7 +72,7 @@ export class ChannelService {
     deleteFile(fileId: number, channelId: number) {
         return this.http.delete(environment.url +
             'file-manager/v1/file/delete/?fileId=' + fileId +
-            '&channelId=' + channelId);
+            '&channelId=' + channelId, {responseType: 'text'});
     }
     uploadFile(fileToUpload: File, userId: string, channelId: number) {
         const formData: FormData = new FormData();
