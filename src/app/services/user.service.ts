@@ -4,6 +4,7 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {UserModel} from '../models/UserModel';
+import {UserRegistrationModel} from '../models/UserRegistrationModel';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,10 @@ export class UserService {
         return this.http
             .post(environment.url + 'users/v1/users/login', {userName: username, userPassword: password})
             .pipe(map( (rsp: any) => new UserModel(rsp.data)));
+    }
+
+    registerUser(userData: UserRegistrationModel): Observable<any> {
+        return this.http
+            .post(environment.url + 'users/v1/users/register', userData);
     }
 }

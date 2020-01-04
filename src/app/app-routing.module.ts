@@ -6,12 +6,14 @@ import {LoginActivateGuard} from './guarts/login-activate.guard';
 import {Page404Component} from './components/page404/page404.component';
 import {IsLoggedInGuard} from './guarts/is-logged-in.guard';
 import {AllChannelsComponent} from './components/all-channels/all-channels.component';
+import {RegisterComponent} from './components/register/register.component';
 
 
 const routes: Routes = [
     {path: '', pathMatch: 'full', component: UserCredentialsComponent, canActivate: [IsLoggedInGuard]},
     {path: 'main', component: LandingPageComponent, canActivate: [LoginActivateGuard]},
     {path: 'allChannels', component: AllChannelsComponent, canActivate: [LoginActivateGuard]},
+    {path: 'register', component: RegisterComponent, canActivate: [IsLoggedInGuard]},
     {path: '**', component: Page404Component}
 ];
 
