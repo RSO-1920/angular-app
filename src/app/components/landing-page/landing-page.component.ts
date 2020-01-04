@@ -137,7 +137,7 @@ export class LandingPageComponent implements OnInit {
         let fileToUpload: File = null;
         fileToUpload = files.item(0);
         console.log(fileToUpload);
-        this.channelService.uploadFile(fileToUpload, 1, this.currentChannel.channelId).subscribe(
+        this.channelService.uploadFile(fileToUpload, this.userDataLanding.id, this.currentChannel.channelId).subscribe(
             (rsp: any) => {
                 console.log('FILE UPLOAD: ', rsp);
                 this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
@@ -160,7 +160,7 @@ export class LandingPageComponent implements OnInit {
         console.log('channel: ' + this.currentChannel.channelId);
         // TODO: NASTAVI USERJA
         if (value !== '') {
-            this.channelService.postMessage(value, 'uros', this.currentChannel.channelId).subscribe(
+            this.channelService.postMessage(value, this.userDataLanding.username, this.currentChannel.channelId).subscribe(
                 (rsp: any) => {
                     console.log('RSP: ', rsp);
                 },
@@ -183,5 +183,27 @@ export class LandingPageComponent implements OnInit {
                 console.log(error);
             }
         );
+    }
+
+    unsubsscirbe() {
+        this.channelService.deleteUserOnChannel(this.userDataLanding.id, this.currentChannel.channelId).subscribe(
+            (rsp: any) => {
+                console.log('USER FROM CHANNEL DELETION: ', rsp);
+                this.getChannelsOfUser();
+            },
+            error => console.log(error)
+        )
+        console.log('unsubscibe');
+    }
+
+    deleteChannel() {
+        this.channelService.deleteChannel(this.currentChannel.channelId)
+            .subscribe(
+                (rsp: any) => {
+                    console.log('deleting channel', rsp);
+                    this.getChannelsOfUser();
+                },
+                error => console.log(error)
+            );
     }
 }

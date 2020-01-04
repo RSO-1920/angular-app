@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Channel} from '../models/channel';
 import {environment} from '../../environments/environment';
 import {catchError} from 'rxjs/operators';
+import {NewChannelModel} from '../models/NewChannelModel';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,35 @@ export class ChannelService {
 
     // MANAGE CHANNELS
     getChannels(id: string): Observable<any> {
-        // const url = environment.url.concat('channels/v1/channels/userChannels/2');
         return this.http
             .get(environment.url + 'channels/v1/channels/userChannels/' + id);
     }
+
+    getAllChannels(): Observable<any> {
+        return this.http
+            .get(environment.url + 'channels/v1/channels/');
+    }
+
+    addUserOnChannel(userId: string, channelId): Observable<any> {
+        return this.http
+            .post(environment.url + 'channels/v1/channels/addUserOnChannel', {userId, channelId});
+    }
+
+    deleteUserOnChannel(userId: string, channelId: number): Observable<any> {
+        return this.http
+            .delete(environment.url + 'channels/v1/channels/remove/user/' + userId + '/channel/' + channelId);
+    }
+
+    deleteChannel(channelId: number, deleteDefault = false): Observable<any> {
+        return this.http
+            .delete(environment.url + 'channels/v1/channels/' + channelId + '/channel?deleteDefault=' + deleteDefault);
+    }
+
+    createChannel(chanelData: NewChannelModel): Observable<any> {
+        return this.http
+            .post(environment.url + 'channels/v1/channels/createChannel', chanelData);
+    }
+
     getFilesOfChannel(id: number): Observable<any> {
         return this.http.get(environment.url + 'catalog/v1/catalog/channel/' + id);
     }
@@ -48,11 +74,12 @@ export class ChannelService {
             'file-manager/v1/file/delete/?fileId=' + fileId +
             '&channelId=' + channelId);
     }
-    uploadFile(fileToUpload: File, userId: number, channelId: number) {
+    uploadFile(fileToUpload: File, userId: string, channelId: number) {
         const formData: FormData = new FormData();
         formData.append('file', fileToUpload, fileToUpload.name);
-        formData.append('integerUser', userId.toString());
+        formData.append('integerUser', userId);
         formData.append('integerChannel', channelId.toString());
+        console.log('uploading file');
         return this.http
             .post(environment.url + 'file-manager/v1/file/upload', formData);
     }

@@ -4,6 +4,7 @@
             <span>RSO-1920</span>
             <span class="spacer"></span>
             <span style="margin-right: 1em"><small>{{ String() }}</small></span>
+            <button mat-button color="accent" (click)="router.navigate(['/allChannels'])">ALL CHANNELS</button>
             <button mat-raised-button color="warn" (click)="logOut()">Logout</button>
         </mat-toolbar-row>
     </mat-toolbar>
@@ -28,8 +29,13 @@
                 <div style="margin: 0.5em">
                     <div class="row">
                         <div class="col-11">
-                            <h3>{{this.currentChannel.bucketName}} <small>[{{this.currentChannel.channelId}}]</small></h3>
-                            <p><small>{{this.currentChannel.bucketName}} / {{this.currentChannel.channelType.typeName}}</small></p>
+                            <div style="display: inline-block; float: left">
+                                <h3>{{this.currentChannel.channelName}} <small>[{{this.currentChannel.channelId}}]</small></h3>
+                                <p><small>{{this.currentChannel.bucketName}} / {{this.currentChannel.channelType.typeName}}</small></p>
+                            </div>
+                            <button *ngIf="currentChannel.channelType.typeId === 2" mat-raised-button (click)="unsubsscirbe()">UNSUBSCRIBE FROM CHANNEL</button>
+                            <button *ngIf="currentChannel.channelType.typeId === 2 && userDataLanding.id === currentChannel.adminId" color="warn" mat-raised-button (click)="deleteChannel()">DELETE CHANNEL</button>
+
                         </div>
                         <div class="col-1">
                             <div class="form-group">
@@ -45,7 +51,7 @@
                              fxLayout="row wrap"
                              fxLayout.xs="column"
                              fxLayoutAlign="space-evenly"
-                             fxLayoutGap="10px grid"
+                             fxLayoutGap="20px grid"
                              fxLayoutGap.xs="0"
                         >
                             <mat-form-field class="fullwidth">
@@ -57,7 +63,7 @@
 
                             <div *ngIf="this.channelFiles">
                                 <div *ngFor="let file of this.channelFiles" style="display: inline-block; width: 50%; max-width: 50%; margin-top: 3%">
-                                    <app-file-card [file]="file"  ></app-file-card>
+                                    <app-file-card [file]="file" ></app-file-card>
                                 </div>
                             </div>
 

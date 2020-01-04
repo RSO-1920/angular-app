@@ -3,3 +3,8 @@
     top: 0px;
     right: 0px;
 }
+
+::ng-deep .mat-card-title{
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+}

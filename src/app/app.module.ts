@@ -21,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
  */
 import {ChannelService} from './services/channel.service';
 import {UserService} from './services/user.service';
+import { AllChannelsComponent } from './components/all-channels/all-channels.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {UserService} from './services/user.service';
     LandingPageComponent,
     Page404Component,
     FileCardComponent,
+    AllChannelsComponent,
   ],
     imports: [
         BrowserModule,

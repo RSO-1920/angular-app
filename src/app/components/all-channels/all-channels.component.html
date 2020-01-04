@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <span routerLink="/main" routerLinkActive="active" class="mainLink">RSO-1920</span>
+            <span class="spacer"></span>
+            <span style="margin-right: 1em"><small>{{ String() }}</small></span>
+            <button mat-raised-button color="warn" (click)="logOut()">Logout</button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <div class="row">
+        <div class="col-9"
+             fxLayout="row wrap"
+             fxLayout.xs="column"
+             fxLayoutAlign="space-evenly"
+             fxLayoutGap="10px grid"
+             fxLayoutGap.xs="0"
+        >
+            <div *ngFor="let channel of allChannels">
+                <mat-card *ngIf="channel.channelType.typeId === 2">
+                    <mat-card-header>
+                        <mat-card-title>{{channel.channelName}}</mat-card-title>
+                        <mat-card-subtitle>{{channel.bucketName}} | {{channel.channelId}} </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        TYPE: {{channel.channelType.typeName}}
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button (click)="subscribeOnChannel(channel.channelId)">SUBSCRIBE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <div class="col-3">
+            <h3>Create channel</h3>
+            <mat-form-field class="fullwidth">
+                <input matInput type="text" placeholder="Channel name" [(ngModel)]="this.newChannel.channelName">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="createChannel()">CREATE</button>
+            <button mat-raised-button color="warn" (click)="resetCreate()">REST FORM</button>
+        </div>
+    </div>
+
+</div>
+
+
+
