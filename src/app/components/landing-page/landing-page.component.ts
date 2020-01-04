@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Channel} from '../../models/channel';
 import {ChannelService} from '../../services/channel.service';
 import {Message} from '../../models/message';
+import {UserModel} from '../../models/UserModel';
 
 @Component({
     selector: 'app-landing-page',
@@ -13,7 +14,7 @@ import {Message} from '../../models/message';
 })
 export class LandingPageComponent implements OnInit {
 
-    userDataLanding: any;
+    userDataLanding: UserModel;
     currentChannel: Channel;
     channels: Array<Channel>;
     channelFiles: Array<File>;
@@ -30,13 +31,16 @@ export class LandingPageComponent implements OnInit {
 
     ngOnInit() {
         this.oathService.receiveUserData().subscribe(
-            (data: string) => {
+            (data: UserModel) => {
                 this.userDataLanding = data;
-                // TODO  IF NULL GET USER ID FROM LOCALSTORAGE AND CALL SERVICE FOR GETTING USER DETAILED DATA
+                if (!this.userDataLanding) {
+                    this.userDataLanding = this.oathService.getUserAccessToken();
+                }
+                console.log('RECEIVED USER DATA: ', this.userDataLanding);
+                this.getChannelsOfUser();
                 this.changeDetector.markForCheck();
             }
         );
-        this.getChannelsOfUser();
     }
 
     logOut() {
@@ -48,11 +52,11 @@ export class LandingPageComponent implements OnInit {
         if (!this.userDataLanding) {
             return 'NO USER';
         }
-        return this.userDataLanding.toString();
+        return this.userDataLanding.username;
     }
 
     private getChannelsOfUser() {
-        return this.channelService.getChannels(1).subscribe(
+        return this.channelService.getChannels(this.userDataLanding.id).subscribe(
             (success) => {
                 this.channels = success.data;
                 this.currentChannel = this.channels[0];
@@ -63,23 +67,33 @@ export class LandingPageComponent implements OnInit {
                         break;
                     }
                 }
-                this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
-                    // tslint:disable-next-line:no-shadowed-variable
-                    (success1) => {
-                        this.channelFiles = success1.data;
-                        this.channelService.getMessagesOfChannel(this.currentChannel.channelId).subscribe(
-                            (messagesRsp: any) => {
-                                this.channelMessages =  messagesRsp.data;
-                                this.changeDetector.markForCheck();
+                this.oathService.authorizeUsersOnChannel(this.userDataLanding.authToken, this.currentChannel.channelId).subscribe(
+                    (rsp: string) => {
+                        console.log('AUTH RESPONSE: ', rsp);
+                        if (rsp !== 'True') {
+                            this.logOut();
+                            return;
+                        }
+                        this.channelService.getFilesOfChannel(this.currentChannel.channelId).subscribe(
+                            // tslint:disable-next-line:no-shadowed-variable
+                            (success1) => {
+                                this.channelFiles = success1.data;
+                                this.channelService.getMessagesOfChannel(this.currentChannel.channelId).subscribe(
+                                    (messagesRsp: any) => {
+                                        this.channelMessages =  messagesRsp.data;
+                                        this.changeDetector.markForCheck();
+                                    },
+                                    error => {
+                                        console.log('error: ', error);
+                                    }
+                                );
                             },
-                            error => {
-                                console.log('error: ', error);
+                            (error) => {
+                                console.log(error);
                             }
                         );
                     },
-                    (error) => {
-                        console.log(error);
-                    }
+                    error => console.log(error)
                 );
             },
             (error) => {
@@ -120,7 +134,6 @@ export class LandingPageComponent implements OnInit {
         this.channelService.deleteFile(fileId, channelId);
     }
     uploadFile(files: FileList) {
-        // TODO: kaj se pošlje?
         let fileToUpload: File = null;
         fileToUpload = files.item(0);
         console.log(fileToUpload);

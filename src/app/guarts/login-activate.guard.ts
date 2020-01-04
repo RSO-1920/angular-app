@@ -14,7 +14,6 @@ export class LoginActivateGuard implements CanActivate {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        // TODO get real access token and so on
         if (!this.oathService.getUserAccessToken()) {
             return this.router.navigate(['']);
         }

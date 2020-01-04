@@ -15,7 +15,12 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { Page404Component } from './components/page404/page404.component';
 import { FileCardComponent } from './components/utils/file-card/file-card.component';
 import { HttpClientModule } from '@angular/common/http';
-import {ChannelService} from "./services/channel.service";
+
+/**
+ * Services
+ */
+import {ChannelService} from './services/channel.service';
+import {UserService} from './services/user.service';
 
 
 @NgModule({
@@ -36,7 +41,10 @@ import {ChannelService} from "./services/channel.service";
         HttpClientModule,
 
     ],
-  providers: [ChannelService],
+  providers: [
+      ChannelService,
+      UserService
+  ],
   bootstrap: [AppComponent]
 })
 

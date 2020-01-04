@@ -15,10 +15,10 @@ export class ChannelService {
     }
 
     // MANAGE CHANNELS
-    getChannels(id: number): Observable<any> {
+    getChannels(id: string): Observable<any> {
         // const url = environment.url.concat('channels/v1/channels/userChannels/2');
         return this.http
-            .get(environment.url + 'channels/v1/channels/userChannels/1');
+            .get(environment.url + 'channels/v1/channels/userChannels/' + id);
     }
     getFilesOfChannel(id: number): Observable<any> {
         return this.http.get(environment.url + 'catalog/v1/catalog/channel/' + id);
