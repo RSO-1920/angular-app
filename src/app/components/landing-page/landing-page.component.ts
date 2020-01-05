@@ -62,7 +62,7 @@ export class LandingPageComponent implements OnInit {
             err => console.log(err),
             () => {
                 console.log('complete');
-                this.subscribeToWebsocket(this.currentChannel.channelId);
+                // this.subscribeToWebsocket(this.currentChannel.channelId);
             }
         );
     }
