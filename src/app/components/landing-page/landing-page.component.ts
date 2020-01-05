@@ -60,7 +60,10 @@ export class LandingPageComponent implements OnInit {
                 this.changeDetector.markForCheck();
             },
             err => console.log(err),
-            () => console.log('complete')
+            () => {
+                console.log('complete');
+                this.subscribeToWebsocket(this.currentChannel.channelId);
+            }
         );
     }
 
