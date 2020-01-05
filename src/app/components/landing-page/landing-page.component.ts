@@ -6,6 +6,9 @@ import {ChannelService} from '../../services/channel.service';
 import {Message} from '../../models/message';
 import {UserModel} from '../../models/UserModel';
 
+import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
+import {environment} from '../../../environments/environment';
+
 @Component({
     selector: 'app-landing-page',
     templateUrl: './landing-page.component.html',
@@ -20,6 +23,7 @@ export class LandingPageComponent implements OnInit {
     channelFiles: Array<File>;
     channelMessages: Array<Message>;
     searchString = '';
+    myWebSocket: WebSocketSubject<any> = null;
 
     constructor(
       private oathService: OathService,
@@ -40,6 +44,23 @@ export class LandingPageComponent implements OnInit {
                 this.getChannelsOfUser();
                 this.changeDetector.markForCheck();
             }
+        );
+    }
+
+    subscribeToWebsocket(channelId: number) {
+        if (this.myWebSocket) {
+            this.myWebSocket.unsubscribe();
+        }
+
+        this.myWebSocket = webSocket( environment.websocket + 'msg/' + channelId);
+        this.myWebSocket.subscribe(
+            (msg: Message) => {
+                console.log('RECEIVED MESSAGE: ', msg);
+                this.channelMessages.push(msg);
+                this.changeDetector.markForCheck();
+            },
+            err => console.log(err),
+            () => console.log('complete')
         );
     }
 
@@ -81,6 +102,7 @@ export class LandingPageComponent implements OnInit {
                                 this.channelService.getMessagesOfChannel(this.currentChannel.channelId).subscribe(
                                     (messagesRsp: any) => {
                                         this.channelMessages =  messagesRsp.data;
+                                        this.subscribeToWebsocket(this.currentChannel.channelId);
                                         this.changeDetector.markForCheck();
                                     },
                                     error => {
@@ -116,6 +138,7 @@ export class LandingPageComponent implements OnInit {
                                 break;
                             }
                         }
+                        this.subscribeToWebsocket(this.currentChannel.channelId);
                         this.changeDetector.markForCheck();
                     },
                     (error) => {
